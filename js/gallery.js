@@ -64,6 +64,8 @@ const images = [
   },
 ];
 
+const galleryArr = document.querySelector(".gallery");
+
 const markup = images
   .map(
     ({ preview, original, description }) => `
@@ -79,20 +81,17 @@ const markup = images
   )
   .join("");
 
-const box = document.querySelector(".gallery");
+galleryArr.insertAdjacentHTML("beforeend", markup);
 
-function box(event) {
-  if (event.target.nodeName !== "IMG") {
-    return; // користувач клікнув між кнопками
-  }
-}
+galleryArr.addEventListener("click", (event) => {
+  event.preventDefault();
+  if (event.target.nodeName !== "IMG") return;
 
-document.querySelector("IMG").onclick = () => {
-  basicLightbox
-    .create(
-      `
-		<img width="1400" height="900" src="${preview}">
-	`
-    )
-    .show();
-};
+  const originalSrc = event.target.dataset.source;
+
+  const instance = basicLightbox.create(`
+    <img src="${originalSrc}" width="112" height="640">
+  `);
+
+  instance.show();
+});
